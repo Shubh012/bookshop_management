@@ -1,16 +1,9 @@
 #include<iostream> 
+#include<stdlib.h>
 #include<conio.h>
 #include<string>
-#include"book_class.h"
+#include"book.h"
 using namespace std;
-
-void addBook(int count);
-void deleteBook(int count);
-void editBook(int count);
-void searchBook(int count);
-void viewAllBooks(int count);
-void quit();
-
 
 int count=0;
 
@@ -28,7 +21,6 @@ Book books[10];//Array of objects for Book class
 
 int main(){
 string choice;
-int no_books;
 system("CLS");
 cout<<"BOOKSHOP MANAGEMENT SYSTEM\n\n";
 cout<<"[1]ADD BOOK\n";	
@@ -43,22 +35,35 @@ getline(cin,choice);
 system("CLS");
 
 if(choice=="1"){
-	addBook(count); 
+	for(int i=0;i<=count;i++){
+		books[i].addBook(count);
+	}
+	 
 }		
 else if(choice=="2"){	
-	deleteBook(count); 
+	for(int i=0;i<=count;i++){
+	books[i].deleteBook(count); 
+	}
 }
 else if(choice=="3"){
-	editBook(count); 	
+	for(int i=0;i<=count;i++){
+	books[i].editBook(count); 
+	}
+
 }
 else if(choice=="4"){
-	searchBook(count); 	
+	for(int i=0;i<=count;i++){
+		books[i].searchBook(count); 
+	}	
 }
 else if(choice=="5"){
-	viewAllBooks(count); 	
+	for(int i=0;i<=count;i++){
+		books[i].viewAllBooks(count); 
+	}
+		
 }
 else if(choice=="6"){
-	quit();	 
+	exit(0);	 
 }
 else{
 	main();  
@@ -68,8 +73,7 @@ return 0;
 }
 
 //addBook function
-void addBook(int count){
-	string isbn,title,author,edition,publication;
+void Book::addBook(int count){
 	cout<<"ADD BOOK\n\n";
 	if(count<10){
 		cout<<"Enter ISBN: ";
@@ -82,25 +86,21 @@ void addBook(int count){
 		getline(cin,edition);
 		cout<<"Enter Publication: ";
 		getline(cin,publication);
-		books[count].setIsbn(isbn); 
-		books[count].setTitle(title);
-		books[count].setAuthor(author);
-		books[count].setEdition(edition);
-		books[count].setPublication(publication);	
 		increment(count);
 		cout<<"\nBOOK ADDED SUCCESSFULLY!\n\nPress any key to continue . . .";
 		_getch();
 		main();
 	}
 	else{
-		cout<<"YOU HAVE REACHED THE MAXIMUM NUMBER OF BOOKS TO BE ADDED!\n\nPress any key to continue . . .";
+		cout<<"The maximum amount of books have reached"<<endl;
 		_getch();
 		main();
+		}
 	}
-}
+
 
 //deleteBook function
-void deleteBook(int count){
+void Book::deleteBook(int count){
 	string isbn;
 	int choice;
 	cout<<"DELETE BOOK\n\n";
@@ -113,24 +113,24 @@ void deleteBook(int count){
 	getline(cin,isbn);
 
 	for(int i=0;i<count;i++){
-		if(books[i].getIsbn()==isbn){
+		if(books[i].isbn==isbn){
 			cout<<"\nBOOK FOUND\n\n";
 			cout<<"Do you want to delete?\n[1]Yes\n[2]No\n\nEnter Choice: ";
 			cin>>choice;
 			if(choice==1){
-				books[i].setIsbn(""); 
-				books[i].setTitle("");
-				books[i].setAuthor("");
-				books[i].setEdition("");
-				books[i].setPublication("");
+				books[i].isbn; 
+				books[i].title;
+				books[i].author;
+				books[i].edition;
+				books[i].publication;
 				for(int a=i;a<count;a++){
 					books[a] = books[a+1];
 				}
-				books[9].setIsbn(""); 
-				books[9].setTitle("");
-				books[9].setAuthor("");
-				books[9].setEdition("");
-				books[9].setPublication("");
+				books[9].isbn; 
+				books[9].title;
+				books[9].author;
+				books[9].edition;
+				books[9].publication;
 				decrement(count); 
 				cout<<"\nBOOK SUCCESSFULLY DELETED!\n\nPress any key to continue . . .";
 				_getch();
@@ -146,10 +146,9 @@ void deleteBook(int count){
 	main();
 	
 }
-void editBook(int count){
+void Book::editBook(int count){
 	system("CLS");
 	string editIsbn,choice;
-	string isbn,title,author,edition,publication;
 	cout<<"\nEDIT BOOK\n\n";
 	if(count==0){
 		cout<<"THERE IS NO BOOK TO EDIT!\n\nPress any key to continue . . .";
@@ -159,13 +158,13 @@ void editBook(int count){
 	cout<<"Enter ISBN: ";
 	getline(cin,editIsbn);
 	for(int i=0;i<count;i++){
-		if(books[i].getIsbn()==editIsbn){
+		if(books[i].isbn==editIsbn){
 			cout<<"\nBOOK FOUND!\n\n";
-			cout<<"ISBN: "<<books[i].getIsbn()<<endl;
-			cout<<"TITLE: "<<books[i].getTitle()<<endl;
-			cout<<"AUTHOR: "<<books[i].getAuthor()<<endl;
-			cout<<"EDITION: "<<books[i].getEdition()<<endl;
-			cout<<"PUBLICATION: "<<books[i].getPublication()<<endl;
+			cout<<"ISBN: "<<books[i].isbn<<endl;
+			cout<<"TITLE: "<<books[i].title<<endl;
+			cout<<"AUTHOR: "<<books[i].author<<endl;
+			cout<<"EDITION: "<<books[i].edition<<endl;
+			cout<<"PUBLICATION: "<<books[i].publication<<endl;
 			cout<<"\nDo you want to edit?\n[1]Yes\n[2]No\n\nEnter choice: ";
 			getline(cin,choice);
 			if(choice=="1"){
@@ -179,11 +178,6 @@ void editBook(int count){
 				getline(cin,edition);
 				cout<<"Enter Publication: ";
 				getline(cin,publication);
-				books[i].setIsbn(isbn);
-				books[i].setTitle(title);
-				books[i].setAuthor(author);
-				books[i].setEdition(edition);
-				books[i].setPublication(publication);	
 				cout<<"\nBOOK EDITED SUCCESSFULLY!\n\nPress any key to continue . . .";
 				_getch();
 				editBook(count);
@@ -197,7 +191,7 @@ void editBook(int count){
 	_getch();
 	main();
 }
-void searchBook(int count){
+void Book::searchBook(int count){
 	string isbn;
 	int choice;
 	bool print = false; 
@@ -210,13 +204,13 @@ void searchBook(int count){
 	cout<<"Enter ISBN: ";
 	getline(cin,isbn);
 	for(int i=0;i<count;i++){
-		if(books[i].getIsbn()==isbn){ 
+		if(books[i].isbn==isbn){ 
 			cout<<"\nBOOK FOUND!\n\n";
-			cout<<"ISBN: "<<books[i].getIsbn()<<endl;
-			cout<<"TITLE: "<<books[i].getTitle()<<endl;
-			cout<<"AUTHOR: "<<books[i].getAuthor()<<endl;
-			cout<<"EDITION: "<<books[i].getEdition()<<endl;
-			cout<<"PUBLICATION: "<<books[i].getPublication()<<endl;
+			cout<<"ISBN: "<<books[i].isbn<<endl;
+			cout<<"TITLE: "<<books[i].title<<endl;
+			cout<<"AUTHOR: "<<books[i].author<<endl;
+			cout<<"EDITION: "<<books[i].edition<<endl;
+			cout<<"PUBLICATION: "<<books[i].publication<<endl;
 			print = true;
 		}
 	}
@@ -231,7 +225,7 @@ void searchBook(int count){
 		main();		
 	}
 }
-void viewAllBooks(int count){
+void Book::viewAllBooks(int count){
 	cout<<"VIEW ALL BOOKS\n\n";
 	if(count==0){
 		cout<<"THERE IS NO BOOK TO DISPLAY!\n\nPress any key to continue . . .";
@@ -240,11 +234,11 @@ void viewAllBooks(int count){
 	}
 	for(int i=0;i<count;i++){
 		cout<<"BOOK DETAILS\n\n";
-		cout<<"ISBN: "<<books[i].getIsbn()<<endl;
-		cout<<"TITLE: "<<books[i].getTitle()<<endl;
-		cout<<"AUTHOR: "<<books[i].getAuthor()<<endl;
-		cout<<"EDITION: "<<books[i].getEdition()<<endl;
-		cout<<"PUBLICATION: "<<books[i].getPublication()<<endl<<endl;
+		cout<<"ISBN: "<<books[i].isbn<<endl;
+		cout<<"TITLE: "<<books[i].title<<endl;
+		cout<<"AUTHOR: "<<books[i].author<<endl;
+		cout<<"EDITION: "<<books[i].edition<<endl;
+		cout<<"PUBLICATION: "<<books[i].publication<<endl<<endl;
 	}
 	cout<<"Press any key to continue . . .";
 	_getch();
